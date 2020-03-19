@@ -75,7 +75,12 @@ interface IERC20 {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
-
+interface UniswapFactory {
+     // Create Exchange
+    function createExchange(address token) external returns (address exchange);
+    // Get Exchange and Token Info
+    function getExchange(address token) external view returns (address exchange);
+}
 
 
 interface UniswapPool {
@@ -106,6 +111,10 @@ interface UniswapPool {
 }
 
 contract Connector {
+    
+    function createExchange(address token) public returns (address exchange) {
+        UniswapFactory(0xD3E51Ef092B2845f10401a0159B2B96e8B6c3D30).createExchange(token);
+    }
     
     function addLiquidity(uint256 minLiquidity, uint256 maxTokens, uint256 deadline) external payable returns (uint256) {
        uint256 uniswap = UniswapPool(0x8Bcd6f821012989b8d32EF002667a6524296A279).addLiquidity.value(msg.value)(minLiquidity, maxTokens, deadline);
